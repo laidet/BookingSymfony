@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Titre pour la page profil{% endblock %}
+    {% block header %}
+
+        <nav>Contenu du block header</nav>
+
+    {% endblock %}
+
+    {% block body %}
+
+        <h1>{{ title }}</h1>
+        <h2>Profile de {{ nom}}, votre accès est : {{acces}}</h2>
+
+    {% endblock %}
