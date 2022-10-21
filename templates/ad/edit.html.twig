@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifier une annonce {% endblock %}
+
+{% form_theme form 'ad/_collections.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Modification d'une annonce</h1>
+
+        {{ form_start(form) }}
+
+            {{ form_widget(form) }}
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block form_row %}
+
+    <div class="form-group">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+    </div>
+
+{% endblock %}
+
