@@ -35,7 +35,7 @@ class Ad
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $slug;
+    private ?string $slug = null;
 
     #[ORM\Column]
     private ?float $price = null;
@@ -65,6 +65,10 @@ class Ad
     #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Image::class, orphanRemoval:true)]
     
     private Collection $images;
+
+    #[ORM\ManyToOne(inversedBy: 'ads')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $author = null;
 
     public function __construct()
     {
@@ -203,6 +207,18 @@ class Ad
                 $image->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

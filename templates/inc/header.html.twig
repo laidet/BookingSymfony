@@ -10,9 +10,43 @@
                         <a class="nav-link active" href="{{path('homepage')}}">Accueil</a>
                         </li>
                     </ul>
+
                     <ul class="navbar-nav ml-auto">
-                        <a class="nav-link" href="#">Mon compte</a>
-                        </li>
+
+                        {% if app.user %}
+
+                            <li class="nav-item dropdown">
+
+                                <a href="#" class="nav-link dropdown-toggle" id="accountDropdownLink" data-bs-toggle="dropdown">
+                                    <img src="{{ app.user.avatar }}" alt="Avatar de {{ app.user.fullName }}" class="avatar avatar-small">
+                                    {{app.user.fullName}}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledBy="accountDropdownLink">
+                                
+                                    <a class="dropdown-item" href="{{path('ads_create')}}">Créer une annonce</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{path('account_home')}}">Mon compte</a>
+                                    <a class="dropdown-item" href="{{path('account_profile')}}">Modifier mon profil</a>
+
+                                    <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{path('app_account_logout')}}">Deconnexion</a>
+                                    
+                                
+                                </div>
+
+                            </li>
+
+                        {% else %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{path('account_register')}}">Inscription</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{path('app_account_login')}}">Connexion</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

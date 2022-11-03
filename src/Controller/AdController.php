@@ -63,11 +63,13 @@ class AdController extends AbstractController
                 $manager->persist($image);
             }
 
+            $ad->setAuthor($this->getUser()); // pour attribuer l'annonce créée à l'utilisateur connecté 
+
             // si le formulaire est soumis ET si le formulaire est valide, on demande a Doctrine de sauvegarder ces données dans l'objet $manager
             $manager->persist($ad);
             $manager->flush();
 
-            // pour afficher un lessage flash
+            // pour afficher un message flash
             $this->addFlash('success',"Annonce <strong>{$ad->getTitle()}</strong> créée avec succès");
 
             // on fait une redirection après validation vers l'annonce qui à été crée

@@ -47,19 +47,27 @@
             </div>
 
             <div class="col">
+
+            <!-- creation d'une variable pour éviter d'écrire ad.author entièrement dans les lignes suivantes -->
+            {% set a = ad.author %} 
+            
                 <div class="row">
                     <div class="col-4">
-                        <img src="" alt="avatar">
+                        <a href="{{path('app_user_show',{'slug':a.slug})}}">
+                            <img src="{{ a.avatar }}" alt="{{ a.fullName }}" class="avatar avatar-medium">
+                        </a>
                     </div>
 
                     <div class="col">
-                        <h3>John Doe</h3>
-                        <span class="badge badge-warning">3 annonces</span>
+                        <a href="{{path('app_user_show',{'slug':a.slug})}}">
+                            <h3>{{ a.fullName }}</h3>
+                        </a>
+                        <span class="badge badge-warning">{{ a.ads | length }} {% if a.ads | length > 1 %} annonces {% else %} annonce {% endif %}</span>
                     </div>
                 </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fugit! Sint mollitia magnam iste, rem sunt sit repellat, fugit consequuntur quos nisi deserunt laboriosam! Sit et mollitia hic optio facere!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fugit! Sint mollitia magnam iste, rem sunt sit repellat, fugit consequuntur quos nisi deserunt laboriosam! Sit et mollitia hic optio facere!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fugit! Sint mollitia magnam iste, rem sunt sit repellat, fugit consequuntur quos nisi deserunt laboriosam! Sit et mollitia hic optio facere!</p>
+                <div class="col py-3">
+                    {{ a.introduction | raw}}
+                </div>
             </div>
         </div>
     </div>

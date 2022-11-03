@@ -36,3 +36,27 @@ footer{
 .form-group{
     margin: 1em;
 }
+
+span.badge.badge-warning {
+    background-color: orange;
+}
+
+span.badge.badge-primary {
+    background-color: black;
+}
+
+.avatar{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+}
+
+.avatar-medium{
+    max-width: 64px;
+    max-height: 64px;
+}
+
+.avatar-small{
+    max-width: 32px;
+    max-height: 32px;
+}
