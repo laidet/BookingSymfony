@@ -3,17 +3,18 @@
 namespace App\Entity;
 
 use App\Entity\Ad;
+use App\Entity\Role;
 use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -66,6 +67,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Ad::class, orphanRemoval: true)]
     private $ads;
 
+    #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: 'users')]
+    private Collection $userRoles;
+
     public function getFullName(){
         return "{$this->firstname} {$this->lastname}";
     }
@@ -73,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->ads = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
     }
 
     /**
@@ -212,7 +217,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAd(Ad $ad): self
     {
         if ($this->ads->removeElement($ad)) {
-            // set the owning side to null (unless already changed)
+            // définir le côté propriétaire sur null (sauf si déjà modifié)
             if ($ad->getAuthor() === $this) {
                 $ad->setAuthor(null);
             }
@@ -224,7 +229,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles():array{
 
-        return ['ROLE_USER'];
+        $roles = $this->userRoles->map(function($role){
+            return $role->getTitle(); // map permet de renvoyer un tableau en chaine de caractère 
+        })->toArray();
+
+        $roles[]='ROLE_USER';
+
+        return $roles;
     }
 
     public function getPassword(): string{
@@ -238,5 +249,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function eraseCredentials(){}
+
+    /**
+     * @return Collection<int, Role>
+     */
+    public function getUserRoles(): Collection
+    {
+        return $this->userRoles;
+    }
+
+    public function addUserRole(Role $userRole): self
+    {
+        if (!$this->userRoles->contains($userRole)) {
+            $this->userRoles->add($userRole);
+            $userRole->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(Role $userRole): self
+    {
+        if ($this->userRoles->removeElement($userRole)) {
+            $userRole->removeUser($this);
+        }
+
+        return $this;
+    }
     
 }

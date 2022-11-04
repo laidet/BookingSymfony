@@ -10,6 +10,11 @@
                             <h4 class="card-title mt-3">{{ad.title}}</h4>
                             <p class="card-text">{{ad.introduction}}</p>
                             <a href="{{ url }}" class="btn btn-warning">+ d'infos</a>
+
+                            {% if app.user and app.user == ad.author %} <!-- condition pour que seulement l'auteur de l'annonce puisse la modifier en faisant apparaitre ce lien -->
+                            <a href="{{path('ads_edit',{'slug':ad.slug})}}" class="btn btn-info">Modifier</a>
+                            {% endif %}
+
                         </div>
                     <div class="card-footer text-muted">
                         <span>Pas encore noté</span>

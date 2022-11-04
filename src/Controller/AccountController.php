@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -84,6 +85,8 @@ class AccountController extends AbstractController
      * Modification du profil utilisateur
      *
      * @Route("/account/profile",name="account_profile")
+     * @IsGranted("ROLE_USER")
+     * 
      * @return Response
      */
     public function profile(Request $request, EntityManagerInterface $manager){
@@ -108,6 +111,7 @@ class AccountController extends AbstractController
     /**
      * Permet la modification du mot de passe
      * @Route("/account/password-update",name="account_password")
+     * @IsGranted("ROLE_USER")
      * 
      * @return Response
      * 
@@ -164,6 +168,7 @@ class AccountController extends AbstractController
         /**
          * Permet d'afficher la page mon compte
          * @Route("/account",name="account_home")
+         * @IsGranted("ROLE_USER")
          * 
          * @return Response
          */

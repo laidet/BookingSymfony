@@ -14,53 +14,43 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AdRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-/**
- * Gérer les doublons de titre
- * @UniqueEntity(
- * fields={"title"},
- * message="Une autre annonce a déjà ce titre, veuillez en changer"
- * )
- */
+#[UniqueEntity(fields:'title',message:"une autre annonce a déja éte ce titre, veuillez en changer")]
+
+
 class Ad
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    //#[Assert\Length(min:10,max:255,minMessage:" le titre doit faire + de 10 caractères",maxMessage:"votre message est trop long pas plus de de 255 caractères")]
 
-    #[ORM\Column(length: 255)]
-    /**
-     * @Assert\Length(min=10,minMessage="Le titre doit faire + de 10 caractères", maxMessage="Votre titre est trop long, pas plus de 255 caractères")
-     */
-    private ?string $title = null;
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
+  
+    #[ORM\Column(type: 'string', length: 255)]
+    private $title;
 
-    #[ORM\Column(type: Types::TEXT)]
-    /**
-     * @Assert\Length(min=30,minMessage="Merci de mettre au moins 30 caractères")
-     *
-     * @var string|null
-     */
-    private ?string $introduction = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $slug;
 
-    #[ORM\Column(type: Types::TEXT)]
-    /**
-     * @Assert\Length(min=100,minMessage="Merci de mettre au moins 100 caractères")
-     *
-     * @var string|null
-     */
-    private ?string $content = null;
+    #[ORM\Column(type: 'float')]
+    private $price;
 
-    #[ORM\Column(length: 255)]
-    private ?string $coverImage = null;
+    #[ORM\Column(type: 'text')]
+    // #[Assert\Length(min:30,minMessage:" le titre doit faire + de 10 caractères"),]
+     private $introduction;
 
-    #[ORM\Column]
-    private ?int $rooms = null;
+     #[ORM\Column(type: 'text')]
+     #[Assert\Length(min:100,minMessage:" Merci de mettre au moins 100 caractères"),]
+     private $content;
+
+     #[ORM\Column(type: 'string', length: 255)]
+    private $coverImage;
+
+    
+    #[ORM\Column(type: 'integer')]
+    private $rooms;
 
     #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Image::class, orphanRemoval:true)]
     
@@ -76,12 +66,10 @@ class Ad
     }
 
     /**
-     * Création d'une fonction pour permettre d'initialiser le slug (avant la persistance et avant le mise à jour)
-     * 
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     * 
+     * Creation dune fonction pour permettre d initilisaer le slug(avant la persitance et avant la maj)
      */
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
 
         public function initiliazeSlug(){
 
