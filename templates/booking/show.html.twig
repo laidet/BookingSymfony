@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation n°{{booking.id}} {% endblock %}
+
+{% block body %}
+
+    <main class="container">
+        <h1 class="mb-4">Réservation n°{{booking.id}} du bien :</h1>
+        <h2 class="h4 mb-5"><em><a href="{{path('ads_single',{'slug':booking.ad.slug})}}"> {{booking.ad.title}}</a></em></h2>   
+        
+        {% if app.request.query.get('alert') %}
+
+        <div class="alert alert-success">
+            <h4 class="alert-heading">Bravo !</h4>
+            <p>Votre réservation auprès de 
+                <a href="{{path('app_user_show',{'slug':booking.ad.author.slug})}}"> {{booking.ad.author.fullName}}</a>
+                pour l'annonce <a href="{{path('ads_single',{'slug':booking.ad.slug})}}">{{booking.ad.title}}</a> a bien été enregistrée.
+            </p>
+        </div>
+
+        {% endif %}
+
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-light">
+                    <h3>Détails</h3>
+                    <dl class="row">
+                        <dt class="col-md-4">Numéro :</dt>
+                        <dd class="col-md-8">{{booking.id}}</dd>
+                        <dt class="col-md-4">Date d'arrivée :</dt>
+                        <dd class="col-md-8">{{booking.startDate | date('d/m/Y')}}</dd>
+                        <dt class="col-md-4">Date de départ :</dt>
+                        <dd class="col-md-8">{{booking.endDate | date('d/m/Y')}}</dd>
+                        <dt class="col-md-4">Nombre de nuits :</dt>
+                        <dd class="col-md-8">{{booking.duration}}</dd>
+                        <dt class="col-md-4">Cout par nuit :</dt>
+                        <dd class="col-md-8">{{booking.ad.price}}€</dd>
+                        <dt class="col-md-4">Montant total :</dt>
+                        <dd class="col-md-8">{{booking.amount}}€</dd>
+                        <dt class="col-md-4">Commentaire :</dt>
+                        <dd class="col-md-8">{{booking.comment}}</dd>
+                    </dl>
+
+                    <h3 class="alert-heading">Propriétaire du bien</h3>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="{{booking.ad.author.avatar}}" alt="Avatar de {{booking.ad.author.fullName}}" class="avatar avatar-medium">
+                        </div>
+                        <div class="col-md-9">
+                            <h4 class="h5">
+                                <a href="{{path('app_user_show',{'slug':booking.ad.author.slug})}}">{{booking.ad.author.fullName}}</a>
+                            </h4>
+                            <span class="badge-primary">{{booking.ad.Author.ads| length}} {% if booking.ad.Author.ads| length > 1 %}annonces {% else %} annonce {% endif %}</span>
+                        </div>
+                        <div class="px-3 mt-3">
+                            {{booking.ad.author.description | raw}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-light ">
+                    <h3 class="alert-heading">Votre hébergement</h3>
+                    <h4 class="mt-3"><a href="{{path('ads_single',{'slug':booking.ad.slug})}}" class="btn btn-outline-primary">{{booking.ad.title}}</a></h4>
+                    <img src="{{booking.ad.coverImage}}" alt="Image de couverture de {{booking.ad.title}}" class="img-fluid mt-3 mb-3">
+                    {{booking.ad.content | raw}}
+                    <a href="{{path('ads_single',{'slug':booking.ad.slug})}}" class="btn btn-outline-primary">Détails</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

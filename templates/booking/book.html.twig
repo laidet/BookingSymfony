@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire de réservation{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <h1 class="h2">Réservation pour l'annonce <br>
+                    <small>{{ad.title}}</small>
+    </h1>
+
+    <h6>Vous allez réserver le bien de <strong><em>{{ad.author.fullName}}</em></strong>. Voir plus de biens de ce <a href="{{path('app_user_show',{'slug':ad.author.slug})}}">loueur</a>.</h6>
+
+    {{form_start(form)}}
+
+    <div class="row">
+        <div class="col">
+            {{form_row(form.startDate)}}
+        </div>
+        <div class="col">
+            {{form_row(form.endDate)}}
+        </div>
+        <div class="col mt-4">
+            <h4>Montant du séjour : <span id="amount">...</span> €</h4>
+            <span id="days">0</span> nuit(s) à {{ad.price}} € / nuit
+        </div>
+    </div>
+
+    <h3>Vous avez un commentaire ?</h3>
+    
+    {{form_row(form.comment)}}
+
+    <button type="submit" class="btn btn-primary">Réserver !</button>
+    <a href="{{path('ads_single',{'slug':ad.slug})}}" class="btn btn-secondary">Retour</a>
+
+    {{form_end(form)}}
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            $('#booking_startDate,#booking_endDate').datepicker({
+                format:'dd/mm/yyyy',
+                startDate: new Date(),
+                datesDisabled:[
+                    {% for day in ad.notAvailableDays %}
+                        "{{ day.format('d/m/Y') }}",
+                    {% endfor %}
+                ]
+            });
+
+            $('#booking_startDate,#booking_endDate').on('change',calculateAmount);
+        });
+
+        function calculateAmount(){
+            // Calculer l'intervale entre 2 dates
+
+            // 21/03/2019
+
+            /* Expression régulière pour faire du tri, récupérer des mots dans nos informations pour préciser ce qu'on attend
+                ^ c'est en début de chaine de caractère et $ c'est à la fin de la chaine de caractère
+                [] intervale de caractère soit [a-zA-Z] ou [0-9] ou [b-g] et si [^b-g] c'est que j'exclus les lettres de b à g
+                ? le caractère qui le precéde peut apparaitre 0 ou 1 fois
+                + le caractère qui le precéde peut apparaitre 1 à plusieurs fois
+                * le caractère qui le precéde peut apparaitre 0 ou 1 ou plusieurs fois
+                {n} le caractère peut être répété n fois ex:{0,5} le caractère peut être répété de 0 à 5 fois
+                // on commente une expression régulière donc si on  veut se servir d'un / il faudra l'échapper avec un \ avant
+                \d on recherche un nombre un caractère décimal
+                \D on recherche un caractère qui n'est pas décimal
+            */
+
+            // 2019-03-21
+
+            const endDate = new Date($('#booking_endDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/,'$3-$2-$1')); // les // en début et fin de la date disent qu'on recherche une expression régulière
+            const startDate = new Date($('#booking_startDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/,'$3-$2-$1'));
+
+
+            // On compare les 2 dates pour trouver le nombre de jours
+
+            if(startDate && endDate && startDate < endDate){
+                const dayTime = 24*60*60*1000;
+                const interval = endDate.getTime() - startDate.getTime();
+                const days = interval/dayTime;
+
+            // On multiplie l'intervale par le prix du bien
+
+            const amount = days * {{ ad.price }};
+
+            // Insertion des nombres dans la page de réservation
+            $('#days').text(days);
+
+            $('#amount').text(amount.toLocaleString('fr-FR'));
+
+            }
+        }
+    </script>
+
+{% endblock %}

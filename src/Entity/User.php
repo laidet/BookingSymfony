@@ -70,6 +70,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: 'users')]
     private Collection $userRoles;
 
+    #[ORM\OneToMany(mappedBy: 'booker', targetEntity: Booking::class)]
+    private Collection $bookings;
+
     public function getFullName(){
         return "{$this->firstname} {$this->lastname}";
     }
@@ -78,6 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->ads = new ArrayCollection();
         $this->userRoles = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -272,6 +276,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->userRoles->removeElement($userRole)) {
             $userRole->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setBooker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // définir le côté propriétaire sur null (sauf si déjà modifié)
+            if ($booking->getBooker() === $this) {
+                $booking->setBooker(null);
+            }
         }
 
         return $this;

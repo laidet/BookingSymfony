@@ -60,3 +60,27 @@ span.badge.badge-primary {
     max-width: 32px;
     max-height: 32px;
 }
+
+/* mise en forme des dates pour réservation */
+
+h6 a{
+    color: rgb(203, 19, 19);
+}
+a:hover{
+    color: rgb(203, 19, 19);
+    text-decoration: none;
+}
+
+/* page show.html.twig */
+h2 a{
+    text-decoration: none;
+}
+h2 a:hover{
+    text-decoration: underline;
+}
+
+/* calendrier de réservation */
+.datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{
+    color: indianred !important;
+    text-decoration: line-through;
+}
