@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connxion administration</title>
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/app.css">
+        <link rel="stylesheet" href="/css/admin.css">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <script src="https://kit.fontawesome.com/9867d74d04.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <main class="container">
+    
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h1 class="text-center">Booking</h1>
+                        <h4 class="card-title text-center"><i class="fa-solid fa-lock"></i> Connexion à la partie administration</h4>
+                    </div>
+                    <div class="card-body">
+
+                        {% if hasError %}
+                            <div class="alert alert-warning">
+                                <p>Les informations fournies sont erronnées.</p>
+                            </div>
+                        {% endif %}
+
+                                <form method="post">
+                                    <div class="form-group">
+                                        <label for="username">Email</label>
+                                        <input type="email" name="_username" id="username" placeholder="Votre email" class="form-control" value="{{username}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Mot de passe</label>
+                                        <input type="password" name="_password" id="password" placeholder="Votre mot de passe" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-lock-open"></i> Connexion</button>
+                                        <a href="{{path('homepage')}}" class="btn btn-link">Retour sur le site</a>
+                                    </div>
+                                </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>

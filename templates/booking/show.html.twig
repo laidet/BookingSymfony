@@ -38,7 +38,7 @@
                         <dt class="col-md-4">Montant total :</dt>
                         <dd class="col-md-8">{{booking.amount}}€</dd>
                         <dt class="col-md-4">Commentaire :</dt>
-                        <dd class="col-md-8">{{booking.comment}}</dd>
+                        <dd class="col-md-8">{{booking.comment | default ('Aucun commentaire') }}</dd>
                     </dl>
 
                     <h3 class="alert-heading">Propriétaire du bien</h3>
@@ -55,6 +55,38 @@
                         <div class="px-3 mt-3">
                             {{booking.ad.author.description | raw}}
                         </div>
+                    </div>
+                    <div class="alert alert-light" id="comment">
+                        <h3 class="alert-heading h5">Votre avis nous intéresse !</h3>
+
+                            {% if date() > date(booking.endDate) %}
+
+                                {% set comment = booking.ad.commentFromAuthor(app.user) %}
+                                {% if comment is not null %}
+
+                                    <blockquote>{{ comment.content }}</blockquote>
+                                    <strong>Note : </strong> {% include 'inc/rating.html.twig' with {'rating':comment.rating } %}
+
+                                {% else %}
+
+                                    {{form_start(form)}}
+
+                                    {{form_widget(form)}}
+
+                                    <button class="submit btn btn-primary">Envoyer</button>
+
+                                    {{form_end(form)}}
+
+                                {% endif %}
+
+                            {% else %}
+
+                                <p class="alert alert.warning">Vous ne pourrez pas noter cette annonce tant que votre séjour ne sera pas terminé
+                                <br>Revenez une fois votre séjour terminé.</p>
+
+
+                            {% endif %}
+
                     </div>
                 </div>
             </div>

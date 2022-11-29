@@ -61,6 +61,11 @@ span.badge.badge-primary {
     max-height: 32px;
 }
 
+.avatar-xs{
+    max-width: 26px;
+    max-height: 26px;
+}
+
 /* mise en forme des dates pour réservation */
 
 h6 a{
@@ -72,11 +77,21 @@ a:hover{
 }
 
 /* page show.html.twig */
-h2 a{
+a{
     text-decoration: none;
 }
-h2 a:hover{
+a:hover{
     text-decoration: underline;
+}
+blockquote{
+    font-style: oblique;
+    color: rgb(66, 62, 62);
+}
+.rating i{
+    color: goldenrod;
+}
+small.taille{
+    text-transform: initial;
 }
 
 /* calendrier de réservation */
@@ -84,3 +99,9 @@ h2 a:hover{
     color: indianred !important;
     text-decoration: line-through;
 }
+
+thead.t-primary{
+    background: #232323 !important;
+    color: #f1f1f1;
+}
+

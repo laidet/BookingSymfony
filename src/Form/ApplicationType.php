@@ -16,7 +16,7 @@ class ApplicationType extends AbstractType{
      */
     protected function getConfiguration($label,$placeholder,$options=[]){
 
-        return array_merge([ // array_merge permet de fusionner 2 tableaux
+        return array_merge_recursive([ // array_merge permet de fusionner 2 tableaux
                 'label'=>$label,
                 'attr'=>['placeholder'=>$placeholder]
                 ],

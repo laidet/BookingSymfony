@@ -1,0 +1,9 @@
+/* Gestion des annonces */
+span.badge.badge-info.rounded, span.badge.badge-success.rounded{
+    color: #55595C;
+ }
+
+ .container-fluid{
+    font-size: 12px;
+    align-items: center;
+ }

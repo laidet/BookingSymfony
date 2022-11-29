@@ -28,7 +28,7 @@ class Booking
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\Type("DateTimeInterface",message:'Le Format doit être une date')]
-    #[Assert\GreaterThan("now",message:"La date d'arrivée doit être ultérieure à la date d'aujourd'hui")]
+    #[Assert\GreaterThan("now",message:"La date d'arrivée doit être ultérieure à la date d'aujourd'hui",groups:["front"])]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -47,6 +47,7 @@ class Booking
 
     // Callback appelé à chaque fois que on crée une réservation
     #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     
     /**
      * @return Response

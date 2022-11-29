@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{path('homepage')}}">MyBooking</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fa-solid fa-chart-line"></i> Tableau de bord</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{path('admin_ads_list')}}"><i class="fa-solid fa-hotel"></i> Annonces</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{path('admin_bookings_list')}}"><i class="fa-regular fa-folder"></i> Réservations</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{path('admin_comments_list')}}"><i class="fa-regular fa-comment"></i> Commentaires</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa-regular fa-user"></i> Utilisateurs</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav ml-auto align-items-center">
+
+                        {% if app.user %}
+
+                        <li class="nav-item">
+                            <a href="{{path('homepage')}}" class="nav-link" target="_blank"><i class="fa-regular fa-eye"></i> Voir le site</a>
+                        </li>
+
+                            <li class="nav-item dropdown">
+
+                                <a href="#" class="nav-link dropdown-toggle" id="accountDropdownLink" data-bs-toggle="dropdown">
+                                    <img src="{{ app.user.avatar }}" alt="Avatar de {{ app.user.fullName }}" class="avatar avatar-small">
+                                    {{app.user.fullName}}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledBy="accountDropdownLink">
+
+                                    <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{path('admin_account_logout')}}">Déconnexion</a>
+                                    
+                                </div>
+
+                            </li>
+
+                        {% else %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{path('account_register')}}">Inscription</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{path('app_account_login')}}">Connexion</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
