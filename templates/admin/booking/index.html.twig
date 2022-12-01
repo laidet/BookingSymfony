@@ -18,7 +18,7 @@
                 <th></th>
             </thead>
             <tbody>
-                {% for booking in bookings %}
+                {% for booking in pagination.data %}
                 <tr>
                     <td>{{booking.Id}}</td>
                     <td>{{booking.createdAt|date('d/m/Y H:i')}}</td>
@@ -36,6 +36,9 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {{pagination.display()}}
+
     </main>
 
 {% endblock %}
