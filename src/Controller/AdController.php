@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Entity\Image;
 use App\Form\AnnonceType;
+use App\Service\Pagination;
 use Doctrine\ORM\EntityManager;
 use App\Repository\AdRepository;
 use Doctrine\Persistence\ObjectManager;
@@ -13,14 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdController extends AbstractController
 {
     // Permet d'afficher une liste d'annonces donc plusieurs annonces
-    #[Route('/ads', name: 'ads_list')]
+    #[Route('/ads/{page<\d+>?1}', name: 'ads_list')]
 
     // cours de stéphanie mais fonctionne plus
         // public function index(){
@@ -28,13 +29,14 @@ class AdController extends AbstractController
             // $ads = $repo->findAll();
         //}
     
-        public function index(AdRepository $repo): Response
+        public function index(AdRepository $repo, Pagination $paginationService, $page): Response
         {
-            $ads = $repo->findAll();
+            $paginationService->setEntityClass(Ad::class)
+                                ->setLimit(6)
+                                ->setPage($page);
         
         return $this->render('ad/index.html.twig', [
-            'controller_name' => 'Nos annonces',
-            'ads' => $ads
+            'pagination' => $paginationService
             ]);
         }
 

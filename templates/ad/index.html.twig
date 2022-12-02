@@ -5,13 +5,17 @@
 {% block body %}
 
 <main class="container">
-    <h1 class="mt-5 mb-3">{{ controller_name }}</h1>
+    <h1 class="mt-5 mb-3">Annonces</h1>
     <div class="row">
-        {% for ad in ads %}
+        {% for ad in pagination.data %}
 
             {% include 'ad/_ad.html.twig' %}
 
         {% endfor %}
+
+        <div class="container mt-5">
+            {{pagination.display()}}
+        </div>
     </div>
 </main>   
 {% endblock %}

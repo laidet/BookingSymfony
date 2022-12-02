@@ -22,7 +22,7 @@ class AdminBookingController extends AbstractController
      * @return Response
      */
     #[Route('/admin/bookings/{page<\d+>?1}', name: 'admin_bookings_list')]
-    public function index(BookingRepository $repo, Pagination $paginationService,$page): Response
+    public function index(BookingRepository $repo, Pagination $paginationService, $page): Response
     {
         $paginationService->setEntityClass(Booking::class)
                           ->setPage($page)
